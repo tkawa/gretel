@@ -85,6 +85,7 @@ Option                   | Description                                          
 :posttext                | Text to be appended after breadcrumb, e.g. `"Text after breacrumb"`,                                                       | None
 :separator               | Separator between links, e.g. `" &rsaquo; "`.                                                                              | `" &rsaquo; "`
 :autoroot                | Whether it should automatically link to the `:root` crumb if no parent is given.                                           | True
+:root                    | Crumb to be rendered when using `autoroot: true`                                                                           | `:root`
 :display_single_fragment | Whether it should display the breadcrumb if it includes only one link.                                                     | False
 :link_current            | Whether the current crumb should be linked to.                                                                             | False
 :semantic                | Whether it should generate [semantic breadcrumbs](http://support.google.com/webmasters/bin/answer.py?hl=en&answer=185417). | False
@@ -133,7 +134,7 @@ crumb :project_issues do |project|
   parent project # inferred to :project
 end
 
-# Child 
+# Child
 crumb :issue do |issue|
   link issue.name, issue_path(issue)
   parent :project_issues, issue.project

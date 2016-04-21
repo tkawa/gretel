@@ -1,3 +1,7 @@
+crumb :alternative_root do
+  link "Alternative Home", root_path
+end
+
 crumb :basic do
   link "About", about_path
 end

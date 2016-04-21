@@ -6,6 +6,7 @@ module Gretel
       posttext: "",
       separator: "",
       autoroot: true,
+      root: :root,
       display_single_fragment: false,
       link_current: false,
       semantic: false,
@@ -79,8 +80,8 @@ module Gretel
       out = links.dup
 
       # Handle autoroot
-      if options[:autoroot] && out.map(&:key).exclude?(:root) && Gretel::Crumbs.crumb_defined?(:root)
-        out.unshift *Gretel::Crumb.new(context, :root).links
+      if options[:autoroot] && out.map(&:key).exclude?(:root) && Gretel::Crumbs.crumb_defined?(options[:root])
+        out.unshift *Gretel::Crumb.new(context, options[:root]).links
       end
 
       # Set current link to actual path
@@ -111,7 +112,7 @@ module Gretel
 
         # Links of first crumb
         links = crumb.links.dup
-        
+
         # Get parent links
         links.unshift *parent_links_for(crumb)
 
@@ -137,9 +138,9 @@ module Gretel
 
     class << self
       include Resettable
-      
+
       # Registers a style for later use.
-      # 
+      #
       #   Gretel::Renderer.register_style :ul, { container_tag: :ul, fragment_tag: :li }
       def register_style(style_key, options)
         styles[style_key] = options

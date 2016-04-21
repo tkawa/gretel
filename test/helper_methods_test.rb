@@ -25,6 +25,12 @@ class HelperMethodsTest < ActionView::TestCase
                  breadcrumbs.to_s
   end
 
+  test "breadcrumb with alternative root" do
+    breadcrumb :basic
+    assert_dom_equal %{<div class="breadcrumbs"><a href="/">Alternative Home</a> &rsaquo; <span class="current">About</span></div>},
+                 breadcrumbs(autoroot: true, root: :alternative_root).to_s
+  end
+
   test "breadcrumb with root" do
     breadcrumb :with_root
     assert_dom_equal %{<div class="breadcrumbs"><a href="/">Home</a> &rsaquo; <span class="current">About</span></div>},
@@ -219,10 +225,10 @@ class HelperMethodsTest < ActionView::TestCase
       links[0].tap do |link|
         assert link.title?
         assert_equal "My Title", link.title
-        
+
         assert link.other?
         assert_equal "Other Option", link.other
-        
+
         assert !link.nonexistent?
         assert_nil link.nonexistent
       end
@@ -263,15 +269,15 @@ class HelperMethodsTest < ActionView::TestCase
 
   test "with_breadcrumb" do
     breadcrumb :basic
-    
+
     assert_dom_equal %{<div class="breadcrumbs"><a href="/">Home</a> &rsaquo; <span class="current">About</span></div>},
                  breadcrumbs.to_s
 
     with_breadcrumb(:with_parent_object, issues(:one)) do
       assert_dom_equal %{<div class="breadcrumbs"><a href="/">Home</a> &rsaquo; <a href="/projects/1">Test Project</a> &rsaquo; <span class="current">Test Issue</span></div>},
                    breadcrumbs.to_s
-    end    
-    
+    end
+
     assert_dom_equal %{<div class="breadcrumbs"><a href="/">Home</a> &rsaquo; <span class="current">About</span></div>},
                  breadcrumbs.to_s
   end
@@ -378,7 +384,7 @@ class HelperMethodsTest < ActionView::TestCase
 
   test "register style" do
     Gretel.register_style :test_style, { container_tag: :one, fragment_tag: :two }
-    
+
     breadcrumb :basic
 
     assert_dom_equal %{<one class="breadcrumbs"><two><a href="/">Home</a></two><two class="current">About</two></one>},
